@@ -28,7 +28,7 @@ export const action = async ({ request }) => {
     await Announcement.create({ announcement });
   } catch (e) {
     console.error("MongoDB save error:", e);
-    return { success: false, error: "Failed to save to database." };
+    return { success: false, error: e.message || "Failed to save to database." };
   }
 
   // 2. Sync to Shopify (GraphQL Metafield) for the default store
