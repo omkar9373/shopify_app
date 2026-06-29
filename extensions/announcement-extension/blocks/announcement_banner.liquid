@@ -1,0 +1,58 @@
+{% assign announcement_text = shop.metafields.my_app.announcement.value | default: shop.metafields.my_app.announcement %}
+{% if announcement_text != blank %}
+  <div class="announcement-banner-wrapper">
+    <div class="announcement-banner-content">
+      <span>{{ announcement_text }}</span>
+    </div>
+  </div>
+
+  <style>
+    .announcement-banner-wrapper {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 999999;
+      background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 50%, #db2777 100%);
+      color: #ffffff;
+      text-align: center;
+      padding: 12px 24px;
+      font-family: 'Outfit', 'Inter', system-ui, -apple-system, sans-serif;
+      font-size: 14px;
+      font-weight: 600;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+      letter-spacing: 0.5px;
+      animation: slideDown 0.5s ease-out forwards;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .announcement-banner-content {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    @keyframes slideDown {
+      from {
+        transform: translateY(-100%);
+      }
+      to {
+        transform: translateY(0);
+      }
+    }
+
+    /* Push the body down so the banner doesn't cover top header */
+    body {
+      margin-top: 45px !important;
+    }
+  </style>
+{% endif %}
+
+{% schema %}
+{
+  "name": "Announcement Banner",
+  "target": "body",
+  "settings": []
+}
+{% endschema %}
