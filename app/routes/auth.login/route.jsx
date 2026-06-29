@@ -7,7 +7,10 @@ import { loginErrorMessage } from "./error.server";
 export const loader = async ({ request }) => {
   const errors = loginErrorMessage(await login(request));
 
-  return { errors };
+  return {
+    errors,
+    apiKey: process.env.SHOPIFY_API_KEY || "",
+  };
 };
 
 export const action = async ({ request }) => {
@@ -19,13 +22,13 @@ export const action = async ({ request }) => {
 };
 
 export default function Auth() {
-  const loaderData = useLoaderData();
+  const { errors, apiKey } = useLoaderData();
   const actionData = useActionData();
   const [shop, setShop] = useState("");
-  const { errors } = actionData || loaderData;
+  const currentErrors = actionData?.errors || errors;
 
   return (
-    <AppProvider embedded={false}>
+    <AppProvider embedded={false} apiKey={apiKey}>
       <s-page>
         <Form method="post">
           <s-section heading="Log in">
@@ -36,7 +39,7 @@ export default function Auth() {
               value={shop}
               onChange={(e) => setShop(e.currentTarget.value)}
               autocomplete="on"
-              error={errors.shop}
+              error={currentErrors.shop}
             ></s-text-field>
             <s-button type="submit">Log in</s-button>
           </s-section>
